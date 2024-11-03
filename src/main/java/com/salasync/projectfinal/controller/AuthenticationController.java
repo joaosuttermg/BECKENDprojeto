@@ -45,6 +45,7 @@ public ResponseEntity register(@RequestBody @Valid RegisterDTO data){
     User newUser = new User(data.email(), encryptedPassword, data.role());
 
     this.userRepository.save(newUser);
+    return ResponseEntity.ok().build();
 }
 
 }
