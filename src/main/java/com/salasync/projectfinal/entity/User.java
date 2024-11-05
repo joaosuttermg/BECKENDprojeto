@@ -1,6 +1,5 @@
 package com.salasync.projectfinal.entity;
 
-import java.net.PasswordAuthentication;
 import java.util.Collection;
 
 import org.springframework.security.core.GrantedAuthority;
@@ -13,23 +12,23 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
+import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Table (name = "Users")
+@Table(name = "Users")
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
-@ALLArgsConstructor
+@AllArgsConstructor
 @EqualsAndHashCode(of = "id")
 public class User implements UserDetails {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // Ou GenerationType.UUID se estiver usando UUID
     private Long id;
 
     @Column(name = "name")
@@ -50,18 +49,36 @@ public class User implements UserDetails {
         this.role = role;
     }
 
-    @Column(name = "available?")
+    @Column(name = "available")
     private boolean available;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getAuthorities'");
+        return role.getAuthorities(); // Você pode precisar implementar `getAuthorities` em UserRole
     }
 
     @Override
     public String getUsername() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getUsername'");
+        return this.email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return this.available;
     }
 }

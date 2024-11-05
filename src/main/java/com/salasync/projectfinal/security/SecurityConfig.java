@@ -1,4 +1,4 @@
-package com.security.projectfinal;
+package com.salasync.projectfinal.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
